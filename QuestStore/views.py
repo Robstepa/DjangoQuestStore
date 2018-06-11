@@ -3,7 +3,9 @@ from django.shortcuts import render
 
 
 def index(request):
-    return render(request, 'index.jinja2')
+    response = render(request, 'index.jinja2')
+    response.set_cookie('session_id', -1)
+    return response
 
 
 def login(request):
@@ -37,8 +39,6 @@ def user_page(request, user):
     user_id = user.id
     name = user.username
     email = user.email
-    if 'session_id' in request.COOKIES:
-        session_id = request.COOKIES['session_id']
     response = render(request, 'user_page.jinja2', {'name': name, 'email': email, 'id': user_id})
     response.set_cookie('session_id', user.id)
     return response
